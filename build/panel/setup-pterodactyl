@@ -7,6 +7,7 @@ fi
 
 sed -i "s/APP_ENV=.*/APP_ENV=local/" .env
 sed -i "s/APP_DEBUG=.*/APP_DEBUG=true/" .env
+sed -i "s/APP_ENVIRONMENT_ONLY=.*/APP_ENVIRONMENT_ONLY=false/" .env
 sed -i "s/APP_URL=.*/APP_URL=https:\/\/pterodactyl.test/" .env
 sed -i "s/CACHE_DRIVER=.*/CACHE_DRIVER=redis/" .env
 sed -i "s/SESSION_DRIVER=.*/SESSION_DRIVER=redis/" .env
@@ -28,6 +29,7 @@ sudo chmod -R 775 storage/* bootstrap/cache
 
 php artisan key:generate --force
 php artisan migrate --seed --force
+php artisan p:user:make
 
 sudo service cron restart
 # Forces supervisord to restart all of the processes with updated configurations.
