@@ -31,11 +31,11 @@ if [ "$1" == "app" ]; then
 # Boot into the wings instance.
 elif [ "$1" == "wings" ]; then
   shift 1
-  "${DOCKER_COMPOSE[@]}" exec -u root wings bash
+  ARGS+=(exec -u root wings bash)
 
 elif [ "$1" == "wings-start" ]; then
   shift 1
-  "${DOCKER_COMPOSE[@]}" "exec -u root wings go run wings.go --ignore-certificate-errors --config config.yml"
+  ARGS+=(exec -u root wings /usr/local/go/bin/go run wings.go --ignore-certificate-errors --config config.yml)
 
 # Start an artisan instance within the container.
 elif [ "$1" == "artisan" ]; then
