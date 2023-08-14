@@ -17,8 +17,8 @@ mkcert pterodactyl.test wings.pterodactyl.test
 
 # Because we're doing Docker-in-Docker we actually need these paths to line
 # up correctly with the host system.
-sudo mkdir -p /var/lib/pterodactyl
-sudo chown $(id -u):$(id -g) /var/lib/pterodactyl
+sudo mkdir -p ./data/pterodactyl
+sudo chown $(id -u):$(id -g) ./data/pterodactyl
 
 mv -v *pterodactyl.test*-key.pem docker/certificates/pterodactyl.test-key.pem || exit 1
 mv -v *pterodactyl.test*.pem docker/certificates/pterodactyl.test.pem || exit 1

@@ -9,6 +9,7 @@ services:
         aliases:
           - pterodactyl.test
           - wings.pterodactyl.test
+          - maildev.pterodactyl.test
     ports:
       - "443:443"
       - "8080:8080"
@@ -45,16 +46,8 @@ services:
       - "traefik.http.routers.webpack-dev-server.service=webpack-dev-server"
       - "traefik.http.services.webpack-dev-server.loadbalancer.server.port=8080"
     environment:
-      TZ: ${TZ:-UTC}
       WWWUSER: ${WWWUSER:-$$(id -u)}
       WWWGROUP: ${WWWGROUP:-$$(id -g)}
-      APP_URL: https://pterodactyl.test
-      DB_HOST: mysql
-      REDIS_HOST: redis
-      DB_USERNAME: pterodactyl
-      DB_PASSWORD: pterodactyl
-      SESSION_DRIVER: redis
-      CACHE_DRIVER: redis
   wings:
     image: ghcr.io/matthieuleboeuf/pterodactyl-development/wings:latest
     # build:
@@ -71,7 +64,7 @@ services:
       - ./code/wings:/home/root/wings
       - ./data/go_modules:/root/go
       - /tmp/pterodactyl:/tmp/pterodactyl
-      - /var/lib/pterodactyl:/var/lib/pterodactyl
+      - ./data/pterodactyl:/var/lib/pterodactyl
       - /var/run/docker.sock:/var/run/docker.sock:ro
     labels:
       - "traefik.enable=true"
@@ -85,7 +78,7 @@ services:
     #  - /dev/loop0
     #  - /dev/loop-control
   mysql:
-    image: mariadb:10.7
+    image: mariadb:latest
     restart: unless-stopped
     ports:
       - "3306:3306"
@@ -96,12 +89,9 @@ services:
       - --lower-case-table-names=1
     volumes:
       - ./data/mysql:/var/lib/mysql
-      - ./docker/mysql:/docker-entrypoint-initdb.d:ro
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: panel
-      MYSQL_USER: pterodactyl
-      MYSQL_PASSWORD: pterodactyl
     networks:
       - pterodactyl
   redis:
@@ -109,6 +99,19 @@ services:
     restart: unless-stopped
     networks:
       - pterodactyl
+  maildev:
+    image: maildev/maildev
+    restart: unless-stopped
+    networks:
+      pterodactyl:
+        aliases:
+          - maildev.pterodactyl.test
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.maildev.tls=true"
+      - "traefik.http.routers.maildev.rule=Host(`maildev.pterodactyl.test`)"
+      - "traefik.http.routers.maildev.entrypoints=https"
+      - "traefik.http.services.maildev.loadbalancer.server.port=1080"
 
 networks:
   pterodactyl:
