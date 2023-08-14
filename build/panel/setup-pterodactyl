@@ -7,24 +7,27 @@ fi
 
 sed -i "s/APP_ENV=.*/APP_ENV=local/" .env
 sed -i "s/APP_DEBUG=.*/APP_DEBUG=true/" .env
-sed -i "s/APP_URL=.*/APP_URL=https://pterodactyl.test/" .env
-sed -i "s/CACHE_DRIVER=.*/CACHE_DRIVER=redis" .env
-sed -i "s/SESSION_DRIVER=.*/SESSION_DRIVER=redis" .env
+sed -i "s/APP_URL=.*/APP_URL=https:\/\/pterodactyl.test/" .env
+sed -i "s/CACHE_DRIVER=.*/CACHE_DRIVER=redis/" .env
+sed -i "s/SESSION_DRIVER=.*/SESSION_DRIVER=redis/" .env
 
-sed -i "s/DB_HOST=.*/DB_HOST=mysql" .env
-sed -i "s/DB_USERNAME=.*/DB_USERNAME=root" .env
-sed -i "s/DB_PASSWORD=.*/DB_PASSWORD=root" .env
+sed -i "s/DB_HOST=.*/DB_HOST=mysql/" .env
+sed -i "s/DB_USERNAME=.*/DB_USERNAME=root/" .env
+sed -i "s/DB_PASSWORD=.*/DB_PASSWORD=root/" .env
 
-sed -i "s/REDIS_HOST=.*/REDIS_HOST=redis" .env
+sed -i "s/REDIS_HOST=.*/REDIS_HOST=redis/" .env
 
-sed -i "s/MAIL_HOST=.*/MAIL_HOST=maildev" .env
-sed -i "s/MAIL_PORT=.*/MAIL_PORT=1025" .env
+sed -i "s/MAIL_HOST=.*/MAIL_HOST=maildev/" .env
+sed -i "s/MAIL_PORT=.*/MAIL_PORT=1025/" .env
 
 composer install --no-interaction --prefer-dist --no-scripts --no-progress
 php artisan config:clear
 yarn install --no-progress
 
 sudo chmod -R 775 storage/* bootstrap/cache
+
+php artisan key:generate --force
+php artisan migrate --seed --force
 
 sudo service cron restart
 # Forces supervisord to restart all of the processes with updated configurations.
