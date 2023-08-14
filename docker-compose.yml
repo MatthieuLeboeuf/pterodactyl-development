@@ -64,7 +64,7 @@ services:
       - ./code/wings:/home/root/wings
       - ./data/go_modules:/root/go
       - /tmp/pterodactyl:/tmp/pterodactyl
-      - ./data/pterodactyl:/var/lib/pterodactyl
+      - /var/lib/pterodactyl:/var/lib/pterodactyl
       - /var/run/docker.sock:/var/run/docker.sock:ro
     labels:
       - "traefik.enable=true"
