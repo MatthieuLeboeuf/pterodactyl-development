@@ -33,6 +33,10 @@ elif [ "$1" == "wings" ]; then
   shift 1
   "${DOCKER_COMPOSE[@]}" exec -u root wings bash
 
+elif [ "$1" == "wings-start" ]; then
+  shift 1
+  ARGS+=("${PEXEC[@]}" go run wings.go --ignore-certificate-errors --config config.yml)
+
 # Start an artisan instance within the container.
 elif [ "$1" == "artisan" ]; then
   shift 1
