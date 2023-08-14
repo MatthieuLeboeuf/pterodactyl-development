@@ -35,7 +35,7 @@ elif [ "$1" == "wings" ]; then
 
 elif [ "$1" == "wings-start" ]; then
   shift 1
-  ARGS+=("${PEXEC[@]}" go run wings.go --ignore-certificate-errors --config config.yml)
+  ARGS+=("${PEXEC[@]}" /usr/local/go/bin/go run wings.go --ignore-certificate-errors --config config.yml)
 
 # Start an artisan instance within the container.
 elif [ "$1" == "artisan" ]; then
