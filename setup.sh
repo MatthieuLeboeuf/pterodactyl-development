@@ -3,7 +3,7 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
 CERTS_DIR="$SCRIPT_DIR/docker/certificates"
 CODE_DIR="$SCRIPT_DIR/code"
 
-for REPO in "panel" "documentation" "wings"
+for REPO in "panel" "wings"
 do
   if [ ! -d "$CODE_DIR/$REPO" ]; then
     git clone https://github.com/pterodactyl/$REPO.git "$CODE_DIR/$REPO"
@@ -13,7 +13,7 @@ do
 done
 
 mkcert -install
-mkcert pterodactyl.test wings.pterodactyl.test minio.pterodactyl.test s3.minio.pterodactyl.test
+mkcert pterodactyl.test wings.pterodactyl.test
 
 # Because we're doing Docker-in-Docker we actually need these paths to line
 # up correctly with the host system.
@@ -28,7 +28,7 @@ echo ""
 if [ ! -f "/etc/hosts" ]; then
   echo "no system hosts file found, please manually configure your system"
 else
-  for DOMAIN in "pterodactyl.test" "wings.pterodactyl.test" "minio.pterodactyl.test" "s3.minio.pterodactyl.test"
+  for DOMAIN in "pterodactyl.test" "wings.pterodactyl.test"
   do
     ESCAPED_DOMAIN=$(echo $DOMAIN | sed "s/\./\\\./g")
     if ! grep -q -E "127\.0\.0\.1\s+$ESCAPED_DOMAIN\s*$" /etc/hosts; then

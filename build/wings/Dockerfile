@@ -1,4 +1,4 @@
-FROM debian:11-slim
+FROM debian:12-slim
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LANG=C.UTF-8
@@ -27,8 +27,8 @@ RUN apt -y update \
         containerd.io \
         iproute2 \
         net-tools \
-    && curl -OL "https://go.dev/dl/go1.18.7.linux-$(dpkg --print-architecture).tar.gz" \
-    && tar xvf "go1.18.7.linux-$(dpkg --print-architecture).tar.gz" -C /usr/local \
+    && curl -OL "https://go.dev/dl/go1.19.11.linux-$(dpkg --print-architecture).tar.gz" \
+    && tar xvf "go1.19.11.linux-$(dpkg --print-architecture).tar.gz" -C /usr/local \
     && chown -R root:root /usr/local/go \
     && rm -rf go*.gz \
     && /usr/local/go/bin/go install github.com/go-delve/delve/cmd/dlv@latest \
