@@ -28,7 +28,6 @@ cd development
 * Traefik Container
 * Panel & Wings Containers
 * MySQL & Redis Containers
-* Minio Container for S3 emulation
 
 ### Accessing the Environment
 Once you've setup the environment, simply run `./beak up -d` to start the environment. This simply aliases
